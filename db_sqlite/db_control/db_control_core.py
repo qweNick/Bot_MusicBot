@@ -199,9 +199,9 @@ class db_control_core:
             cc = "{0} > {1} {2}".format(self.db.rock_songs.s__level_top, min_top_value, cc)
         if flag2:
             if flag1:
-                cc = "{0} < {1} AND {2}".format(self.db.rock_songs.s__level_down, max_down_value)
+                cc = "{0} < {1} AND {2}".format(self.db.rock_songs.s__level_down, max_down_value, cc)
             else:
-                cc = "{0} < {1} {2}".format(self.db.rock_songs.s__level_down, max_down_value)
+                cc = "{0} < {1} {2}".format(self.db.rock_songs.s__level_down, max_down_value, cc)
 
         if flag1 or flag2:
             cc = "{0} < {1} AND {2}".format(self.db.rock_songs.s__last_date, last_date, cc)

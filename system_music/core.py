@@ -53,7 +53,7 @@ class core:
             top_date = self.c_d.get_current_day() - self.repeat_songs_through_count_days
             if top_date < 0:
                 top_date = 1
-            top_songs = self.db_cc.get_top_songs(last_date=top_date, max_down_value=0)
+            top_songs = self.db_cc.get_top_songs(last_date=top_date, max_down_value=1)
             if len(top_songs) > 0:
                 result_message = "Top songs:"
                 for _song in top_songs:
@@ -101,7 +101,7 @@ class core:
                         _song_level_top = _song.get_level_top()
                     _song_level_down = _song.get_level_down_old()
                     if _song_level_down < _song.get_level_down():
-                        _song_level_down = _song.get_level_down_old()
+                        _song_level_down = _song.get_level_down()
                     self.db_cc.update_song_levels(_song.get_song_id(), _song_level_top, _song_level_down)
                     try:
                         self.bot.edit_message_caption(chat_id=_channel_id, message_id=_song.get_message_telegram_id(),
@@ -130,7 +130,7 @@ def any_commands(message):
                     _song_level_top = _song.get_level_top()
                 _song_level_down = _song.get_level_down_old()
                 if _song_level_down < _song.get_level_down():
-                    _song_level_down = _song.get_level_down_old()
+                    _song_level_down = _song.get_level_down()
                 core.db_cc.update_song_levels(_song.get_song_id(), _song_level_top, _song_level_down)
                 try:
                     core.bot.edit_message_caption(chat_id=_channel_id, message_id=_song.get_message_telegram_id(),
@@ -206,6 +206,8 @@ def callback_inline(call):
                     core.send_log(core, "----- Error (callback_inline)")
             else:
                 core.send_log(core, "----- Error (callback_inline) [song not find]")
+                core.bot.edit_message_caption(chat_id=_channel_id, message_id=call.message.message_id,
+                                              caption=call.message.caption)
             # print(result)
 
         if call.data == "-1":
