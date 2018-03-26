@@ -11,7 +11,7 @@ from system_music.classes.songs import songs as class_songs
 from system_music.classes.song import song
 
 _chat_id = "456905705"
-_channel_id = "456905705"
+_channel_id = "@qweRock"
 
 
 class core:
@@ -53,7 +53,7 @@ class core:
             top_date = self.c_d.get_current_day() - self.repeat_songs_through_count_days
             if top_date < 0:
                 top_date = 1
-            top_songs = self.db_cc.get_top_songs(last_date=top_date, max_down_value=1)
+            top_songs = self.db_cc.get_top_songs(count=5, last_date=top_date, max_down_value=1)
             if len(top_songs) > 0:
                 result_message = "Top songs:"
                 for _song in top_songs:
@@ -85,6 +85,8 @@ class core:
                 _song.set_last_date(self.c_d.get_current_day())
                 self.songs.append_song(_song)
                 self.db_cc.update_song_last_date(_song.get_song_id(), self.c_d.get_current_day())
+
+                time.sleep(2)
                 # self.send_log(result.message_id)
         except:
             self.send_log("----- Error (thread_bot_publish_songs) ")
@@ -106,10 +108,12 @@ class core:
                     try:
                         self.bot.edit_message_caption(chat_id=_channel_id, message_id=_song.get_message_telegram_id(),
                                                       caption=_song.get_title())
+                        time.sleep(2)
                     except:
                         self.send_log("----- Error (thread_final_song)")
 
     def send_log(self, text_message):
+        time.sleep(2)
         try:
             self.bot.send_message(chat_id=_chat_id, text=text_message)
         except:
@@ -135,6 +139,7 @@ def any_commands(message):
                 try:
                     core.bot.edit_message_caption(chat_id=_channel_id, message_id=_song.get_message_telegram_id(),
                                                   caption=_song.get_title())
+                    time.sleep(2)
                 except:
                     core.send_log(core, "----- Error (any_commands)")
         core.global_work = False
@@ -202,12 +207,13 @@ def callback_inline(call):
                 try:
                     core.bot.edit_message_caption(chat_id=_channel_id, message_id=call.message.message_id,
                                                   reply_markup=keyboard, caption=_song.get_title())
+                    time.sleep(0.2)
                 except:
                     core.send_log(core, "----- Error (callback_inline)")
             else:
                 core.send_log(core, "----- Error (callback_inline) [song not find]")
-                core.bot.edit_message_caption(chat_id=_channel_id, message_id=call.message.message_id,
-                                              caption=call.message.caption)
+                # core.bot.edit_message_caption(chat_id=_channel_id, message_id=call.message.message_id,
+                #                               caption=call.message.caption)
             # print(result)
 
         if call.data == "-1":
@@ -228,6 +234,7 @@ def callback_inline(call):
                 try:
                     core.bot.edit_message_caption(chat_id=_channel_id, message_id=call.message.message_id,
                                                   reply_markup=keyboard, caption=_song.get_title())
+                    time.sleep(0.2)
                 except:
                     core.send_log(core, "----- Error (callback_inline)")
             else:
